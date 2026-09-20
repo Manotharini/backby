@@ -1,0 +1,169 @@
+{
+  "meta": {
+    "name": "BackBy Chennai demo dataset",
+    "version": 1,
+    "disclaimer": "DEMO DATA. Fares, durations and service windows are approximations for building and testing BackBy. Verify against CMRL, Southern Railway and MTC before real-world use. Always label this as 'demo dataset' in the UI.",
+    "timeUnit": "Minutes since midnight (0-1440). The engine converts to epoch minutes using the outing date.",
+    "moneyUnit": "Integer paise (100 paise = 1 rupee). Never use floats for money."
+  },
+
+  "modeDefaults": {
+    "walk":     { "serviceWindow": { "first": 0,   "last": 1440 }, "headwayMin": 0,  "waitAllowanceMin": 0,  "delayAllowanceMin": 0 },
+    "auto":     { "serviceWindow": { "first": 0,   "last": 1440 }, "headwayMin": 0,  "waitAllowanceMin": 5,  "delayAllowanceMin": 5,
+                  "nightSurcharge": { "fromMin": 1380, "toMin": 300, "multiplier": 1.5, "note": "Approx. 50% extra between 11 PM and 5 AM. Apply to fare min and max when the leg departs in this window." } },
+    "bus":      { "serviceWindow": { "first": 300, "last": 1365 }, "headwayMin": 15, "waitAllowanceMin": 15, "delayAllowanceMin": 15 },
+    "metro":    { "serviceWindow": { "first": 300, "last": 1350 }, "headwayMin": 10, "waitAllowanceMin": 10, "delayAllowanceMin": 5 },
+    "suburban": { "serviceWindow": { "first": 255, "last": 1395 }, "headwayMin": 15, "waitAllowanceMin": 15, "delayAllowanceMin": 10 }
+  },
+
+  "unknownFareFallbackPaise": {
+    "walk": 0,
+    "auto": 30000,
+    "bus": 3000,
+    "metro": 5000,
+    "suburban": 2000
+  },
+
+  "locations": [
+    { "id": "hostel_guindy", "name": "Student hostel, Guindy", "type": "hostel",
+      "aliases": ["hostel", "my hostel", "guindy hostel", "anna university hostel", "iit hostel", "home"] },
+    { "id": "guindy_hub", "name": "Guindy Station (metro + suburban + bus)", "type": "transit_hub",
+      "aliases": ["guindy", "guindy station", "guindy metro", "guindy railway"] },
+    { "id": "mambalam_hub", "name": "Mambalam Station (suburban)", "type": "transit_hub",
+      "aliases": ["mambalam", "west mambalam"] },
+    { "id": "thousand_lights_hub", "name": "Thousand Lights Metro", "type": "transit_hub",
+      "aliases": ["thousand lights", "anna salai"] },
+    { "id": "central_hub", "name": "Chennai Central (metro + suburban/MRTS + bus)", "type": "transit_hub",
+      "aliases": ["central", "chennai central", "mgr central", "park town", "park station"] },
+    { "id": "egmore_hub", "name": "Egmore (suburban + metro)", "type": "transit_hub",
+      "aliases": ["egmore", "egmore station"] },
+    { "id": "velachery_hub", "name": "Velachery (MRTS + bus)", "type": "transit_hub",
+      "aliases": ["velachery", "velachery station", "velachery mrts"] },
+    { "id": "anna_nagar_hub", "name": "Anna Nagar Tower Metro", "type": "transit_hub",
+      "aliases": ["anna nagar", "anna nagar tower", "anna nagar metro"] },
+    { "id": "t_nagar", "name": "T. Nagar (Pondy Bazaar / Ranganathan St)", "type": "destination",
+      "aliases": ["t nagar", "t. nagar", "tnagar", "pondy bazaar", "ranganathan street", "pondybazaar"] },
+    { "id": "express_avenue", "name": "Express Avenue Mall, Royapettah", "type": "destination",
+      "aliases": ["express avenue", "royapettah mall", "ea mall"] },
+    { "id": "marina_beach", "name": "Marina Beach", "type": "destination",
+      "aliases": ["marina", "marina beach", "the beach", "beach"] },
+    { "id": "phoenix_marketcity", "name": "Phoenix Marketcity, Velachery", "type": "destination",
+      "aliases": ["phoenix", "phoenix mall", "phoenix marketcity", "marketcity"] },
+    { "id": "vr_chennai", "name": "VR Chennai Mall, Anna Nagar", "type": "destination",
+      "aliases": ["vr mall", "vr chennai", "vr"] }
+  ],
+
+  "edges": [
+    { "id": "e01", "from": "hostel_guindy", "to": "guindy_hub", "mode": "walk", "durationMin": 15,
+      "fare": { "minPaise": 0, "maxPaise": 0, "confidence": "confirmed" } },
+    { "id": "e02", "from": "hostel_guindy", "to": "guindy_hub", "mode": "auto", "durationMin": 6,
+      "fare": { "minPaise": 5000, "maxPaise": 8000, "confidence": "estimated" } },
+    { "id": "e03", "from": "hostel_guindy", "to": "velachery_hub", "mode": "bus", "durationMin": 35,
+      "serviceWindow": { "first": 300, "last": 1320 },
+      "fare": { "minPaise": 1000, "maxPaise": 1500, "confidence": "estimated" } },
+    { "id": "e04", "from": "hostel_guindy", "to": "t_nagar", "mode": "auto", "durationMin": 28,
+      "fare": { "minPaise": 16000, "maxPaise": 26000, "confidence": "estimated" } },
+
+    { "id": "e05", "from": "guindy_hub", "to": "mambalam_hub", "mode": "suburban", "durationMin": 12,
+      "fare": { "minPaise": 500, "maxPaise": 1000, "confidence": "estimated" } },
+    { "id": "e06", "from": "guindy_hub", "to": "egmore_hub", "mode": "suburban", "durationMin": 25,
+      "fare": { "minPaise": 500, "maxPaise": 1000, "confidence": "estimated" } },
+    { "id": "e07", "from": "guindy_hub", "to": "central_hub", "mode": "metro", "durationMin": 26,
+      "fare": { "minPaise": 4000, "maxPaise": 4000, "confidence": "confirmed" } },
+    { "id": "e08", "from": "guindy_hub", "to": "thousand_lights_hub", "mode": "metro", "durationMin": 16,
+      "fare": { "minPaise": 3000, "maxPaise": 3000, "confidence": "confirmed" } },
+    { "id": "e09", "from": "thousand_lights_hub", "to": "central_hub", "mode": "metro", "durationMin": 9,
+      "fare": { "minPaise": 2000, "maxPaise": 2000, "confidence": "confirmed" } },
+    { "id": "e10", "from": "guindy_hub", "to": "velachery_hub", "mode": "bus", "durationMin": 25,
+      "serviceWindow": { "first": 300, "last": 1305 },
+      "fare": { "minPaise": 1000, "maxPaise": 1500, "confidence": "estimated" } },
+    { "id": "e11", "from": "guindy_hub", "to": "t_nagar", "mode": "bus", "durationMin": 30,
+      "fare": { "minPaise": 1000, "maxPaise": 1500, "confidence": "estimated" } },
+
+    { "id": "e12", "from": "mambalam_hub", "to": "t_nagar", "mode": "bus", "durationMin": 12,
+      "fare": { "minPaise": 500, "maxPaise": 1000, "confidence": "estimated" } },
+    { "id": "e13", "from": "mambalam_hub", "to": "t_nagar", "mode": "auto", "durationMin": 8,
+      "fare": { "minPaise": 5000, "maxPaise": 9000, "confidence": "estimated" } },
+    { "id": "e14", "from": "mambalam_hub", "to": "t_nagar", "mode": "walk", "durationMin": 20,
+      "fare": { "minPaise": 0, "maxPaise": 0, "confidence": "confirmed" } },
+
+    { "id": "e15", "from": "thousand_lights_hub", "to": "express_avenue", "mode": "auto", "durationMin": 8,
+      "fare": { "minPaise": 5000, "maxPaise": 7500, "confidence": "estimated" } },
+    { "id": "e16", "from": "thousand_lights_hub", "to": "express_avenue", "mode": "walk", "durationMin": 22,
+      "fare": { "minPaise": 0, "maxPaise": 0, "confidence": "confirmed" } },
+    { "id": "e17", "from": "t_nagar", "to": "express_avenue", "mode": "bus", "durationMin": 20,
+      "fare": { "minPaise": 1000, "maxPaise": 1500, "confidence": "estimated" } },
+
+    { "id": "e18", "from": "egmore_hub", "to": "central_hub", "mode": "metro", "durationMin": 5,
+      "fare": { "minPaise": 1000, "maxPaise": 1000, "confidence": "confirmed" } },
+    { "id": "e19", "from": "egmore_hub", "to": "central_hub", "mode": "walk", "durationMin": 18,
+      "fare": { "minPaise": 0, "maxPaise": 0, "confidence": "confirmed" } },
+    { "id": "e20", "from": "egmore_hub", "to": "central_hub", "mode": "auto", "durationMin": 6,
+      "fare": { "minPaise": 5000, "maxPaise": 7000, "confidence": "estimated" } },
+
+    { "id": "e21", "from": "central_hub", "to": "marina_beach", "mode": "bus", "durationMin": 22,
+      "serviceWindow": { "first": 300, "last": 1320 },
+      "fare": { "minPaise": 500, "maxPaise": 1500, "confidence": "estimated" } },
+    { "id": "e22", "from": "central_hub", "to": "marina_beach", "mode": "auto", "durationMin": 15,
+      "fare": { "minPaise": 7000, "maxPaise": 12000, "confidence": "estimated" } },
+    { "id": "e23", "from": "express_avenue", "to": "marina_beach", "mode": "auto", "durationMin": 14,
+      "fare": { "minPaise": 8000, "maxPaise": 14000, "confidence": "estimated" } },
+    { "id": "e24", "from": "express_avenue", "to": "marina_beach", "mode": "bus", "durationMin": 25,
+      "serviceWindow": { "first": 330, "last": 1290 },
+      "fare": { "minPaise": null, "maxPaise": null, "confidence": "unknown" },
+      "note": "Deliberately unknown-fare edge. Used to test the missing/uncertain fare path." },
+
+    { "id": "e25", "from": "central_hub", "to": "anna_nagar_hub", "mode": "metro", "durationMin": 20,
+      "fare": { "minPaise": 3000, "maxPaise": 3000, "confidence": "confirmed" } },
+    { "id": "e26", "from": "egmore_hub", "to": "anna_nagar_hub", "mode": "metro", "durationMin": 15,
+      "fare": { "minPaise": 3000, "maxPaise": 3000, "confidence": "confirmed" } },
+    { "id": "e27", "from": "anna_nagar_hub", "to": "vr_chennai", "mode": "auto", "durationMin": 10,
+      "fare": { "minPaise": 6000, "maxPaise": 10000, "confidence": "estimated" } },
+    { "id": "e28", "from": "anna_nagar_hub", "to": "vr_chennai", "mode": "bus", "durationMin": 12,
+      "fare": { "minPaise": 500, "maxPaise": 1000, "confidence": "estimated" } },
+
+    { "id": "e29", "from": "velachery_hub", "to": "phoenix_marketcity", "mode": "auto", "durationMin": 9,
+      "fare": { "minPaise": 5000, "maxPaise": 8000, "confidence": "estimated" } },
+    { "id": "e30", "from": "velachery_hub", "to": "phoenix_marketcity", "mode": "walk", "durationMin": 22,
+      "fare": { "minPaise": 0, "maxPaise": 0, "confidence": "confirmed" } },
+    { "id": "e31", "from": "velachery_hub", "to": "central_hub", "mode": "suburban", "durationMin": 48,
+      "serviceWindow": { "first": 285, "last": 1350 },
+      "fare": { "minPaise": 500, "maxPaise": 1000, "confidence": "estimated" },
+      "note": "MRTS line, Velachery to Park Town, then short walk to Central." }
+  ],
+
+  "edgeNotes": "All edges are bidirectional. The RoutingProvider must expand each edge into both directions. If an edge has no serviceWindow, use modeDefaults[mode].serviceWindow. Departure times for scheduled modes are first + k * headwayMin, not later than serviceWindow.last. Autos and walking are on-demand (add waitAllowanceMin for autos).",
+
+  "testScenarios": [
+    {
+      "id": "S1_happy_path",
+      "request": "I'm at my Guindy hostel and want to go to Marina Beach at 4 PM for about 2 hours. Budget 600 rupees, keep 200 as emergency reserve, hostel curfew is 9:30 PM. I prefer metro and bus, no autos unless needed.",
+      "expected": "At least one valid plan (metro to Central then bus to Marina, and back). Curfew slack is thin but positive after delay allowances. Auto plans rejected or ranked lower due to the preference."
+    },
+    {
+      "id": "S2_unknown_fare",
+      "request": "From Guindy hostel to Marina Beach via Express Avenue, bus only, budget 500, reserve 150, curfew 10 PM, leaving 5 PM, stay 90 minutes.",
+      "expected": "The only bus route from Express Avenue to Marina has an unknown fare. Plan is rejected unless the user allows fare uncertainty. If allowed, it is flagged and uses unknownFareFallbackPaise.bus."
+    },
+    {
+      "id": "S3_no_safe_plan",
+      "request": "Leaving my Guindy hostel at 8:30 PM for Phoenix Marketcity, stay 1 hour, budget 400, reserve 150, curfew 11 PM.",
+      "expected": "No plan satisfies all constraints (last Guindy-Velachery bus 9:45 PM, curfew buffer needs return by 10:30 PM). UI must show the failing constraint and a least-bad option labelled NOT SAFE."
+    },
+    {
+      "id": "S4_budget_impossible",
+      "request": "Going from Guindy hostel to Marina Beach with 150 rupees, and 100 must stay as reserve. Curfew 10 PM, leaving 4 PM.",
+      "expected": "Spendable is 50 rupees, but the cheapest worst-case round trip is more. No valid plan. Show which constraint failed and how much more budget is needed."
+    },
+    {
+      "id": "S5_night_surcharge",
+      "request": "Hostel Guindy to T Nagar at 9:30 PM by auto, stay 90 minutes, budget 800, reserve 200, curfew 12:30 AM.",
+      "expected": "The return auto leg departs after 11 PM, so the 1.5x night surcharge must be applied to both fare min and max before budget and reserve checks."
+    },
+    {
+      "id": "S6_disruption_replan",
+      "steps": "Take the S1 plan. Simulate: the return metro leg Central to Guindy is cancelled.",
+      "expected": "Re-plan from Chennai Central using remaining budget and time. Fallback options: Central to Egmore then suburban to Guindy, or Velachery route (if the time window still allows). If none valid, show NOT SAFE with reasons."
+    }
+  ]
+}
